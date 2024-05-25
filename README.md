@@ -1,6 +1,8 @@
 <div align="center">
 
-  <h3 align="center">Nexus - Your Video Conferencing App</h3>
+
+  # Nexus - Your Video Conferencing App
+ 
   
   <br />
 
