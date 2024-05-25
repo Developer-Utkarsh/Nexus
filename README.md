@@ -13,7 +13,7 @@
 
    <div align="center">
     Nexus is a fast and easy to use video conferencing app.
-
+   </div>
     
 </div>
 
