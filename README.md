@@ -2,9 +2,6 @@
 
 
   # Nexus - Your Video Conferencing App
- 
-  
-  <br />
 
   <div>
     <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
