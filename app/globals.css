@@ -1,33 +1,176 @@
+@import url('@stream-io/video-react-sdk/dist/css/styles.css') layer(video-default);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* ======== stream css overrides ======== */
+.str-video__call-stats {
+	max-width: 500px;
+	position: relative;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.str-video__speaker-layout__wrapper {
+	max-height: 700px;
 }
+
+.str-video__participant-details {
+	color: white;
+}
+
+.str-video__menu-container {
+	color: white;
+}
+
+.str-video__notification {
+	color: white;
+}
+
+.str-video__participant-list {
+	background-color: #1c1f2e;
+	padding: 10px;
+	border-radius: 10px;
+	color: white;
+	height: 100%;
+}
+
+.str-video__call-controls__button {
+	height: 40px;
+}
+
+.glassmorphism {
+	background: rgba(255, 255, 255, 0.075);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+}
+.glassmorphism-card {
+	background: rgba(255, 255, 255, 0.25);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+}
+.glassmorphism2 {
+	background: rgba(18, 17, 17, 0.25);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+/* ==== clerk class override ===== */
+
+.cl-userButtonPopoverActionButtonIcon {
+	color: white;
+}
+
+.cl-logoBox {
+	height: 40px;
+}
+.cl-dividerLine {
+	background: #252a41;
+	height: 2px;
+}
+
+.cl-socialButtonsIconButton {
+	border: 3px solid #565761;
+}
+
+.cl-internal-wkkub3 {
+	color: white;
+}
+.cl-userButtonPopoverActionButton {
+	color: white;
+}
+
+/* =============================== */
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	.flex-center {
+		@apply flex justify-center items-center;
+	}
+
+	.flex-between {
+		@apply flex justify-between items-center;
+	}
 }
+
+/* animation */
+
+.show-block {
+	width: 100%;
+	max-width: 350px;
+	display: block;
+	animation: show 0.7s forwards linear;
+}
+
+@keyframes show {
+	0% {
+		animation-timing-function: ease-in;
+		width: 0%;
+	}
+
+	100% {
+		animation-timing-function: ease-in;
+		width: 100%;
+	}
+}
+
+span.cl-socialButtonsBlockButtonText.cl-socialButtonsBlockButtonText__google.🔒️.cl-internal-15di0mo {
+	color: #ccc;
+}
+span.cl-socialButtonsBlockButtonText.cl-socialButtonsBlockButtonText__github.🔒️.cl-internal-15di0mo {
+	color: #ccc;
+}
+.cl-providerIcon__github {
+	filter: invert(1);
+}
+.camera-icon {
+	filter: invert(1);
+}
+svg.lucide.lucide-x.h-4.w-4 {
+	width: 2rem;
+	height: 2rem;
+	color: #efefef;
+	margin-top: 12px;
+}
+.str-video__call-controls {
+	display: flex;
+	justify-content: center;
+	gap: 0.75rem;
+	padding: 0;
+	margin-bottom: 1rem;
+	align-items: center;
+}
+
+@media (max-width:612px){
+	.str-video__call-controls {
+        margin-bottom: 0.5rem;
+    }
+}
+.str-video {
+	--str-video__primary-color: #0E78F9;
+}
+.str-video__video-placeholder {
+	background: #1C1F2E;
+	border-radius: inherit;
+}
+.str-video__video-preview-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+	height: 350px;
+}
+@media (max-width:992px) {
+	.str-video__video-preview-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 90%;
+			height: 320px;
+		}
+}
+
