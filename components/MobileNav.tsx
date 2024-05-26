@@ -52,31 +52,63 @@ export default function MobileNav() {
 									const isActive = pathname === link.route;
 									return (
 										<SheetClose asChild key={link.route}>
-											<Link
-												key={link.label}
-												href={link.route}
-												className={cn(
-													"flex gap-4 items-center p-4 rounded-[10px] w-full ",
-													{
-														"bg-blue-1": isActive,
-													},
-												)}
-											>
-												<Image
-													src={link.imgUrl}
-													alt={link.label}
-													width={24}
-													height={24}
-												/>
-												<p className='text-lg  font-semibold '>
-													{link.label}
-												</p>
-											</Link>
+											<div>
+												<Link
+													key={link.label}
+													href={link.route}
+													className={cn(
+														"flex gap-4 items-center p-4 rounded-[10px] w-full ",
+														{
+															"bg-blue-1":
+																isActive,
+														},
+													)}
+												>
+													<Image
+														src={link.imgUrl}
+														alt={link.label}
+														width={24}
+														height={24}
+													/>
+													<p className='text-lg  font-semibold '>
+														{link.label}
+													</p>
+												</Link>
+											</div>
 										</SheetClose>
 									);
 								})}
 							</section>
 						</SheetClose>
+					</div>
+					<div className='flex fixed bottom-0 border-t border-gray-700 bg-dark-1 px-2 py-[6px] text-slate-100 justify-between  items-center hover:text-white transition hover:border-blue-1 w-[70%]'>
+						<div
+							className=' text-[14px] 
+				 flex justify-center items-center  gap-1 '
+						>
+							<i className='fa-regular fa-copyright mt-[1px]'></i>
+							<p>Utkarsh Tiwari</p>
+						</div>
+						<div className='flex gap-3  text-base  '>
+							<a
+								href='https://www.linkedin.com/in/DeveloperUtkarsh/'
+								target='_blank'
+							>
+								<i className='fa-brands fa-linkedin-in  hover:text-blue-1 hover:transform hover:scale-110 transition cursor-pointer'></i>
+							</a>
+							<a
+								href='https://github.com/Developer-Utkarsh'
+								target='_blank'
+							>
+								<i className='fa-brands fa-github hover:text-blue-1 hover:transform hover:scale-110 transition cursor-pointer'></i>
+							</a>
+							<a
+								href='https://instagram.com/developer_utkarsh/'
+								target='_blank'
+							>
+								<i className='fa-brands fa-instagram  hover:text-blue-1 hover:transform hover:scale-110 transition cursor-pointer'></i>
+							</a>
+						</div>
 					</div>
 				</SheetContent>
 			</Sheet>

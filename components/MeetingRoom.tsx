@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import Image from "next/image";
 import CopyUrlButton from "./copy";
+import { ButtonBorder } from "./ui/hover-border-gradient";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -128,17 +129,23 @@ const MeetingRoom = () => {
 				<div className='  hover:border-blue-1 transition  p-2 px-4 shadow-md bg-dark-1 rounded-md border border-gray-800 hover:shadow-xl fixed bottom-5 left-5  flex    justify-start ml-4  items-center z-100 '>
 					<p className='text-xl font-extrabold '>{time}</p>
 				</div>
-				<div className='absolute bottom-0 flex  m-auto w-full gap-3 flex-wrap  justify-center items-center'>
-					<CallControls
-						onLeave={async () => {
-							router.push("/");
-							toast({
-								title: "You Left the Meeting Room",
-							});
-						}}
-					/>
+				<div className='absolute bottom-2 flex  m-auto w-full gap-3 flex-wrap  justify-center items-center'>
+					<ButtonBorder
+						borderRadius='9999px'
+						as='button'
+						className='bg-dark-2  text-white flex items-center gap-x-2 '
+					>
+						<CallControls
+							onLeave={async () => {
+								router.push("/");
+								toast({
+									title: "You Left the Meeting Room",
+								});
+							}}
+						/>
 
-					{!isPersonalRoom && <EndCallButton />}
+						{!isPersonalRoom && <EndCallButton />}
+					</ButtonBorder>
 				</div>
 				<div className='fixed bottom-5 right-5  flex   gap-3 justify-end mr-4  items-center'>
 					<button
