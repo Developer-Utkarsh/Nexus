@@ -1,8 +1,7 @@
 <div align="center">
 
-  <h3 align="center">Nexus - Your Video Conferencing App</h3>
-  
-  <br />
+
+  # Nexus - Your Video Conferencing App
 
   <div>
     <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
@@ -13,7 +12,7 @@
 
    <div align="center">
     Nexus is a fast and easy to use video conferencing app.
-
+   </div>
     
 </div>
 
