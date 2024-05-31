@@ -32,7 +32,7 @@ const EndCallButton = () => {
 					title: "Meeting is Ended for Everyone",
 				});
 			}}
-			className='bg-red-500 transition hover:bg-red-600 cursor-pointer  rounded-full'
+			className='bg-red-500 transition hover:bg-red-600 cursor-pointer lg:mb-3   rounded-full'
 		>
 			End Meeting
 		</Button>

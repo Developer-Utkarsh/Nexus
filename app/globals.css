@@ -142,7 +142,7 @@ svg.lucide.lucide-x.h-4.w-4 {
 	justify-content: center;
 	gap: 0.75rem;
 	padding: 0;
-	/* margin-bottom: 1rem; */
+	margin-bottom: 0.75rem;
 	align-items: center;
 }
 
@@ -171,6 +171,6 @@ svg.lucide.lucide-x.h-4.w-4 {
 		justify-content: center;
 		align-items: center;
 		width: 90%;
-		height: 320px;
+		height: 532px;
 	}
 }
