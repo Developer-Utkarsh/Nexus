@@ -5,7 +5,8 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-
+.replit
+replit.nix
 # testing
 /coverage
 

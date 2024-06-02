@@ -52,10 +52,10 @@ const MeetingSetup = ({
 	};
 
 	return (
-		<div className='flex h-screen flex-col w-full items-center justify-center gap-3 text-white'>
-			<h1 className='text-2xl font-bold'>Setup</h1>
+		<div className="flex h-screen flex-col w-full items-center justify-center gap-3 text-white">
+			<h1 className="text-2xl font-bold">Setup</h1>
 			<VideoPreview />
-			<div className='flex h-16 items-center justify-center gap-4 mt-2'>
+			<div className="flex h-16 items-center justify-center gap-4 mt-2 z-50">
 				<button
 					className={`p-2 rounded-full text-xl transition-colors duration-300 ${
 						isMicToggleOn ? "bg-blue-500" : "bg-red-500"
@@ -77,21 +77,21 @@ const MeetingSetup = ({
 					onClick={toggleCam}
 				>
 					{isCamToggleOn ? (
-						<i className='fa-solid fa-camera px-[4px]'></i>
+						<i className="fa-solid fa-camera px-[4px]"></i>
 					) : (
 						<Image
-							src='/icons/camera-off.svg'
-							alt='camera off'
+							src="/icons/camera-off.svg"
+							alt="camera off"
 							width={32}
 							height={32}
-							className='camera-icon mt-1 px-[4px]'
+							className="camera-icon mt-1 px-[4px]"
 						/>
 					)}
 				</button>
 				<DeviceSettings />
 			</div>
 			<Button
-				className='rounded-md bg-green-500 px-4 py-2.5 mt-2 hover:bg-green-600 transition-colors duration-300'
+				className="rounded-md bg-green-500 px-4 py-2.5 mt-2 hover:bg-green-600 transition-colors duration-300 z-50"
 				onClick={() => {
 					call.join();
 					setIsSetupComplete(true);

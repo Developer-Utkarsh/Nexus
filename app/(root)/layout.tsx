@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
-		<main>
+		<main className="z-50">
 			<StreamVideoProvider>{children}</StreamVideoProvider>
 		</main>
 	);

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Palanquin } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
-const inter = Palanquin({
+const inter = Noto_Sans({
 	weight: "400",
 	subsets: ["latin" as "latin"],
 });
@@ -24,14 +25,14 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
+		<html lang="en">
 			<head>
 				<link
-					rel='stylesheet'
-					href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
-					integrity='sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=='
-					crossOrigin='anonymous'
-					referrerPolicy='no-referrer'
+					rel="stylesheet"
+					href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+					integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+					crossOrigin="anonymous"
+					referrerPolicy="no-referrer"
 				/>
 			</head>
 
@@ -50,8 +51,13 @@ export default function RootLayout({
 				}}
 			>
 				<body className={`${inter.className} bg-dark-2`}>
-					{children}
-					<Toaster />
+					<div className="z-0">
+						<BackgroundBeams />
+					</div>
+					<div className="z-50">
+						{children}
+						<Toaster />
+					</div>
 				</body>
 			</ClerkProvider>
 		</html>
