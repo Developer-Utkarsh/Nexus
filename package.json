@@ -28,6 +28,9 @@
     "react": "^18",
     "react-datepicker": "^6.9.0",
     "react-dom": "^18",
+    "svix": "^1.24.0",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
