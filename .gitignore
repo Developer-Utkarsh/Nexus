@@ -7,9 +7,9 @@
 .yarn/install-state.gz
 .replit
 replit.nix
+/.idx
 # testing
 /coverage
-
 # next.js
 /.next/
 /out/

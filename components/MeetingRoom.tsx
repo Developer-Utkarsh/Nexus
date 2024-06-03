@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import Image from "next/image";
 import CopyUrlButton from "./copy";
+import CurrentTime from "./CurrentTime";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -43,17 +44,7 @@ const MeetingRoom = () => {
 	const callingState = useCallCallingState();
 	const router = useRouter();
 
-	const [currentTime, setCurrentTime] = useState(new Date());
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setCurrentTime(new Date());
-		}, 1000);
-
-		return () => {
-			clearInterval(timer);
-		};
-	}, []);
+	
 
 	if (callingState !== CallingState.JOINED) return <Loader />;
 
@@ -70,11 +61,7 @@ const MeetingRoom = () => {
 				return <SpeakerLayout participantsBarPosition='right' />;
 		}
 	};
-	const time = currentTime.toLocaleString("en-US", {
-		hour: "2-digit",
-		minute: "2-digit",
-		hour12: true,
-	});
+	
 	return (
 		<section className='relative h-screen w-full overflow-hidden pt-4 text-white'>
 			<div className='relative flex size-full justify-center'>
@@ -126,7 +113,11 @@ const MeetingRoom = () => {
 
 			<div className='max-md:hidden flex w-full'>
 				<div className='  hover:border-blue-1 transition  p-2 px-4 shadow-md bg-dark-1 rounded-md border border-gray-800 hover:shadow-xl fixed bottom-5 left-5  flex    justify-start ml-4  items-center z-100 '>
-					<p className='text-xl font-extrabold '>{time}</p>
+					<p className='text-xl font-extrabold '>
+
+<CurrentTime />
+
+					</p>
 				</div>
 				<div className='absolute bottom-2 flex  m-auto w-full gap-3 flex-wrap  justify-center items-center'>
 					
