@@ -5,8 +5,8 @@ const UserSchema = new Schema({
 	_id: { type: mongoose.Schema.Types.ObjectId, auto: true },
 	email: { type: String, required: true, unique: true, index: true },
 	image: { type: String },
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+	createdAt: { type: String, default: new Date() },
+	updatedAt: { type: String, default: new Date()  },
 	totalMeetings: [
 		{ type: mongoose.Schema.Types.ObjectId, ref: "Meetings" },
 	],
