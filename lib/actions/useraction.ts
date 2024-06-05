@@ -15,6 +15,11 @@ export async function createUser(user: any) {
 }
 export async function updateUser(id: string, user: any) {
 	try {
+		const timeZone = "Asia/Kolkata"; // Replace with your desired time zone (e.g., "America/New_York")
+		const currentDate = new Date();
+		const options = { timeZone };
+		const formattedDate = currentDate.toLocaleString("en-US", options);
+		
 		await connect();
 		if (id) {
 			const updatedUser = await User.findOneAndUpdate(
@@ -25,7 +30,7 @@ export async function updateUser(id: string, user: any) {
 					email: user.email,
 					username: user.username,
 					image: user.image,
-					updatedAt: new Date(),
+					updatedAt: formattedDate,
 				},
 				{
 					new: true, // Return the updated document
