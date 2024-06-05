@@ -24,7 +24,7 @@ export const connect = async () => {
 	cached.promise =
 		cached.promise ||
 		mongoose.connect(MONGODB_URL, {
-			dbName: "blinkchats",
+			dbName: "nexus",
 			bufferCommands: false,
 			connectTimeoutMS: 10000,
 		});
