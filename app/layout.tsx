@@ -34,6 +34,7 @@ export default function RootLayout({
 					crossOrigin="anonymous"
 					referrerPolicy="no-referrer"
 				/>
+				<meta name="google-site-verification" content="evysaR5_MNYF8Lk1oT6MIKCmc61ohP3yTGnBl2d3krc" />
 			</head>
 
 			<ClerkProvider
