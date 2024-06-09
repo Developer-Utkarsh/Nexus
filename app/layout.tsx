@@ -34,7 +34,7 @@ export default function RootLayout({
 					crossOrigin="anonymous"
 					referrerPolicy="no-referrer"
 				/>
-				<meta name="google-site-verification" content="evysaR5_MNYF8Lk1oT6MIKCmc61ohP3yTGnBl2d3krc" />
+<meta name="google-site-verification" content="x5z731oUt6c6rD5JDeMZ2hdPutuO1V-xKsHbtf0Lr3c" />
 			</head>
 
 			<ClerkProvider
