@@ -1,4 +1,4 @@
-import { Mongoose } from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const MONGODB_URL = process.env.MONGODB_URL!;
 
@@ -18,27 +18,36 @@ if (!cached) {
 
 export let isConnected = false;
 
-export async function connect() {
+export const connect = async () => {
 	if (isConnected) return;
-	try {
-		if (!MONGODB_URL) {
-			throw new Error("MONGODB_URI is not defined");
-		}
+	if (cached.conn) {
+		isConnected = true;
+		return cached.conn;
+	}
 
-		const mongoose = await import("mongoose");
-		cached.conn = await mongoose.connect(MONGODB_URL, {
-			dbName: "nexus",
-			bufferCommands: false,
-			connectTimeoutMS: 10000,
-		});
+	if (!MONGODB_URL) {
+		throw new Error("MONGODB_URL is not defined");
+	}
+
+	try {
+		cached.promise =
+			cached.promise ||
+			mongoose.connect(MONGODB_URL, {
+				dbName: "nexus",
+				bufferCommands: false,
+				connectTimeoutMS: 10000,
+			});
+
+		cached.conn = await cached.promise;
 		isConnected = true;
 		console.log("Database connected successfully");
+		return cached.conn;
 	} catch (error) {
 		isConnected = false;
 		console.error("Database connection error:", error);
 		throw error;
 	}
-}
+};
 
 export function checkConnection() {
 	return isConnected;
