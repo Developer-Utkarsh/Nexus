@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { connect, checkConnection } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 const protectedRoutes = createRouteMatcher([
@@ -22,12 +21,15 @@ export const config = {
 };
 
 export async function checkDbConnection() {
-	try {
-		if (!checkConnection()) {
-			await connect();
+	if (typeof window === "undefined") {
+		const { connect, checkConnection } = await import("@/lib/db");
+		try {
+			if (!checkConnection()) {
+				await connect();
+			}
+		} catch (error) {
+			console.error("Database connection error:", error);
+			throw new Error("Failed to connect to the database");
 		}
-	} catch (error) {
-		console.error("Database connection error:", error);
-		throw new Error("Failed to connect to the database");
 	}
 }

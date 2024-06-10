@@ -1,13 +1,10 @@
-let mongoose;
-if (typeof window === "undefined") {
-	mongoose = require("mongoose");
-}
+import { Mongoose } from "mongoose";
 
 const MONGODB_URL = process.env.MONGODB_URL!;
 
 interface MongooseConn {
-	conn: mongoose.Mongoose | null;
-	promise: Promise<mongoose.Mongoose> | null;
+	conn: Mongoose | null;
+	promise: Promise<Mongoose> | null;
 }
 
 let cached: MongooseConn = (global as any).mongoose;
@@ -27,7 +24,9 @@ export async function connect() {
 		if (!MONGODB_URL) {
 			throw new Error("MONGODB_URI is not defined");
 		}
-		await mongoose.connect(MONGODB_URL, {
+
+		const mongoose = await import("mongoose");
+		cached.conn = await mongoose.connect(MONGODB_URL, {
 			dbName: "nexus",
 			bufferCommands: false,
 			connectTimeoutMS: 10000,
