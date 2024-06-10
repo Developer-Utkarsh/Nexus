@@ -14,6 +14,7 @@ const MeetingDetailsSchema = new Schema({
 	isStarted: Boolean,
 	isScheduled: Boolean,
 	scheduledAt: String,
+	leavedAt: String,
 });
 const PublicMeetingDetailsSchema = new Schema({
 	title: String,
@@ -29,6 +30,7 @@ const PublicMeetingDetailsSchema = new Schema({
 	isStarted: Boolean,
 	isScheduled: Boolean,
 	scheduledAt: String,
+	leavedAt: String,
 });
 
 // User Schema
@@ -45,7 +47,7 @@ const UserSchema = new Schema({
 	username: { type: String, unique: true, index: true },
 	firstName: { type: String },
 	lastName: { type: String },
-	isPrivate:{type:Boolean}
+	isPrivate: { type: Boolean },
 });
 
 const User = models?.users || model("users", UserSchema);
