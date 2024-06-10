@@ -21,7 +21,11 @@ export const config = {
 };
 
 export async function checkDbConnection() {
-	if (typeof window === "undefined") {
+	if (
+		typeof window === "undefined" &&
+		process.env.NODE_ENV !== "production"
+	) {
+		// Dynamically import the DB module only in non-production environments
 		const { connect, checkConnection } = await import("@/lib/db");
 		try {
 			if (!checkConnection()) {

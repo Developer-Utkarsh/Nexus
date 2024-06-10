@@ -1,66 +1,54 @@
-let mongoose;
-let isConnected = false;
+import mongoose, { Mongoose } from "mongoose";
 
-if (typeof window === "undefined") {
-	// Dynamically import mongoose only on the server-side
-	mongoose = require("mongoose");
+const MONGODB_URL = process.env.MONGODB_URL!;
 
-	const MONGODB_URL = process.env.MONGODB_URL;
+interface MongooseConn {
+	conn: Mongoose | null;
+	promise: Promise<Mongoose> | null;
+}
 
-	interface MongooseConn {
-		conn: typeof mongoose | null;
-		promise: Promise<typeof mongoose> | null;
-	}
+let cached: MongooseConn = (global as any).mongoose;
 
-	let cached: MongooseConn = (global as any).mongoose;
-
-	if (!cached) {
-		cached = (global as any).mongoose = {
-			conn: null,
-			promise: null,
-		};
-	}
-
-	export const connect = async () => {
-		if (isConnected) return;
-		if (cached.conn) {
-			isConnected = true;
-			return cached.conn;
-		}
-
-		if (!MONGODB_URL) {
-			throw new Error("MONGODB_URL is not defined");
-		}
-
-		try {
-			cached.promise =
-				cached.promise ||
-				mongoose.connect(MONGODB_URL, {
-					dbName: "nexus",
-					bufferCommands: false,
-					connectTimeoutMS: 10000,
-				});
-
-			cached.conn = await cached.promise;
-			isConnected = true;
-			console.log("Database connected successfully");
-			return cached.conn;
-		} catch (error) {
-			isConnected = false;
-			console.error("Database connection error:", error);
-			throw error;
-		}
+if (!cached) {
+	cached = (global as any).mongoose = {
+		conn: null,
+		promise: null,
 	};
+}
 
-	export function checkConnection() {
-		return isConnected;
+export let isConnected = false;
+
+export const connect = async () => {
+	if (isConnected) return;
+	if (cached.conn) {
+		isConnected = true;
+		return cached.conn;
 	}
-} else {
-	// Provide stubs for browser or environments where mongoose cannot be used
-	export const connect = async () => {
-		console.error("Mongoose cannot be used on the client-side.");
-	};
-	export function checkConnection() {
-		return false;
+
+	if (!MONGODB_URL) {
+		throw new Error("MONGODB_URL is not defined");
 	}
+
+	try {
+		cached.promise =
+			cached.promise ||
+			mongoose.connect(MONGODB_URL, {
+				dbName: "nexus",
+				bufferCommands: false,
+				connectTimeoutMS: 10000,
+			});
+
+		cached.conn = await cached.promise;
+		isConnected = true;
+		console.log("Database connected successfully");
+		return cached.conn;
+	} catch (error) {
+		isConnected = false;
+		console.error("Database connection error:", error);
+		throw error;
+	}
+};
+
+export function checkConnection() {
+	return isConnected;
 }
