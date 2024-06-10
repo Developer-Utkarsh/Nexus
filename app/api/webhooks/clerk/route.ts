@@ -63,14 +63,15 @@ export async function POST(req: Request) {
 			clerkId: id,
 			createdAt: formattedDate,
 			updatedAt: formattedDate,
-			conversationIds: [],
-			seenMessageIds: [],
-			messages: [],
+			totalMeetings:[],
+			createdMeetings:[],
+			publicMeetings:[],
 			email: email_addresses[0].email_address,
 			username: username,
 			firstName: first_name,
 			lastName: last_name,
 			image: image_url,
+			isPrivate:false
 		};
 		const newUser = await createUser(user);
 		if (newUser && typeof id === "string") {
