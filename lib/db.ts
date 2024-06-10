@@ -1,10 +1,13 @@
-import mongoose, { Mongoose } from "mongoose";
+let mongoose;
+if (typeof window === "undefined") {
+	mongoose = require("mongoose");
+}
 
 const MONGODB_URL = process.env.MONGODB_URL!;
 
 interface MongooseConn {
-	conn: Mongoose | null;
-	promise: Promise<Mongoose> | null;
+	conn: mongoose.Mongoose | null;
+	promise: Promise<mongoose.Mongoose> | null;
 }
 
 let cached: MongooseConn = (global as any).mongoose;
@@ -15,6 +18,7 @@ if (!cached) {
 		promise: null,
 	};
 }
+
 export let isConnected = false;
 
 export async function connect() {
