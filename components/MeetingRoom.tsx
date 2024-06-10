@@ -6,6 +6,7 @@ import {
 	CallStatsButton,
 	PaginatedGridLayout,
 	SpeakerLayout,
+	useCall,
 	useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import React, { useEffect, useState } from "react";
@@ -26,16 +27,19 @@ import { useToast } from "./ui/use-toast";
 import Image from "next/image";
 import CopyUrlButton from "./copy";
 import CurrentTime from "./CurrentTime";
+import axios from "axios";
+import { useUser } from "@clerk/nextjs";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 const MeetingRoom = () => {
 	const searchParams = useSearchParams();
 	const { toast } = useToast();
+	const call = useCall();
 
 	const isPersonalRoom = !!searchParams.get("personal");
-
-	const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
+	const { user } = useUser();
+	const [layout, setLayout] = useState<CallLayoutType>("grid");
 
 	const [showParticipants, setShowParticipants] = useState(false);
 
@@ -43,8 +47,6 @@ const MeetingRoom = () => {
 
 	const callingState = useCallCallingState();
 	const router = useRouter();
-
-	
 
 	if (callingState !== CallingState.JOINED) return <Loader />;
 
@@ -61,7 +63,29 @@ const MeetingRoom = () => {
 				return <SpeakerLayout participantsBarPosition='right' />;
 		}
 	};
-	
+
+	const leaveMeeting = async (
+		meetingId: any,
+
+		email: string,
+	) => {
+		const response = await axios.post("/api/meeting/leave/", {
+			meetingId,
+
+			email,
+		});
+	};
+	const endMeeting = async (
+		meetingId: any,
+
+		email: string,
+	) => {
+		const response = await axios.post("/api/meeting/ended/", {
+			meetingId,
+			email,
+		});
+	};
+
 	return (
 		<section className='relative h-screen w-full overflow-hidden pt-4 text-white'>
 			<div className='relative flex size-full justify-center'>
@@ -114,24 +138,53 @@ const MeetingRoom = () => {
 			<div className='max-md:hidden flex w-full'>
 				<div className='  hover:border-blue-1 transition  p-2 px-4 shadow-md bg-dark-1 rounded-md border border-gray-800 hover:shadow-xl fixed bottom-5 left-5  flex    justify-start ml-4  items-center z-100 '>
 					<p className='text-xl font-extrabold '>
-
-<CurrentTime />
-
+						<CurrentTime />
 					</p>
 				</div>
 				<div className='absolute bottom-2 flex  m-auto w-full gap-3 flex-wrap  justify-center items-center'>
-					
-						<CallControls
-							onLeave={async () => {
-								router.push("/");
+					<CallControls
+						onLeave={async () => {
+							if (isPersonalRoom) {
+								await call?.endCall();
+								router.push("/meeting/ended");
+								endMeeting(
+									call?.id,
+									user?.emailAddresses[0]?.emailAddress ||
+										"default@email.com",
+								);
 								toast({
-									title: "You Left the Meeting Room",
+									title: "Personal Meeting is Ended for Everyone",
+								});
+							}
+							router.push("/meeting/leaved");
+							leaveMeeting(
+								call?.id,
+								user?.emailAddresses[0]?.emailAddress ||
+									"default@email.com",
+							);
+
+							toast({
+								title: "You Left the Meeting Room",
+							});
+						}}
+					/>
+
+					{!isPersonalRoom && (
+						<EndCallButton
+							onClick={async () => {
+								await call?.endCall();
+								router.push("/meeting/ended");
+								endMeeting(
+									call?.id,
+									user?.emailAddresses[0]?.emailAddress ||
+										"default@email.com",
+								);
+								toast({
+									title: "Meeting is Ended for Everyone",
 								});
 							}}
 						/>
-
-						{!isPersonalRoom && <EndCallButton />}
-					
+					)}
 				</div>
 				<div className='fixed bottom-5 right-5  flex   gap-3 justify-end mr-4  items-center'>
 					<button
@@ -178,7 +231,27 @@ const MeetingRoom = () => {
 							<div>
 								<CallControls
 									onLeave={async () => {
-										router.push("/");
+										if (isPersonalRoom) {
+											await call?.endCall();
+											router.push("/meeting/ended");
+											endMeeting(
+												call?.id,
+												user?.emailAddresses[0]
+													?.emailAddress ||
+													"default@email.com",
+											);
+											toast({
+												title: "Personal Meeting is Ended for Everyone",
+											});
+										}
+										router.push("/meeting/leaved");
+										leaveMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+
 										toast({
 											title: "You Left the Meeting Room",
 										});
@@ -186,7 +259,23 @@ const MeetingRoom = () => {
 								/>
 							</div>
 							<div className='w-full  gap-2  flex justify-center items-center mb-3'>
-								{!isPersonalRoom && <EndCallButton />}
+								{!isPersonalRoom && (
+									<EndCallButton
+										onClick={async () => {
+											await call?.endCall();
+											router.push("/meeting/ended");
+											endMeeting(
+												call?.id,
+												user?.emailAddresses[0]
+													?.emailAddress ||
+													"default@email.com",
+											);
+											toast({
+												title: "Meeting is Ended for Everyone",
+											});
+										}}
+									/>
+								)}
 								<button
 									onClick={() =>
 										setShowParticipants((prev) => !prev)
@@ -239,14 +328,49 @@ const MeetingRoom = () => {
 						<div className='fixed bottom-0 flex w-full  gap-2 flex-wrap  justify-center items-center'>
 							<CallControls
 								onLeave={async () => {
-									router.push("/");
+									if (isPersonalRoom) {
+										await call?.endCall();
+										router.push("/meeting/ended");
+										endMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+										toast({
+											title: "Personal Meeting is Ended for Everyone",
+										});
+									}
+									router.push("/meeting/leaved");
+									leaveMeeting(
+										call?.id,
+										user?.emailAddresses[0]?.emailAddress ||
+											"default@email.com",
+									);
+
 									toast({
 										title: "You Left the Meeting Room",
 									});
 								}}
 							/>
 
-							{!isPersonalRoom && <EndCallButton />}
+							{!isPersonalRoom && (
+								<EndCallButton
+									onClick={async () => {
+										await call?.endCall();
+										router.push("/meeting/ended");
+										endMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+										toast({
+											title: "Meeting is Ended for Everyone",
+										});
+									}}
+								/>
+							)}
 							<button
 								onClick={() =>
 									setShowParticipants((prev) => !prev)
@@ -298,14 +422,49 @@ const MeetingRoom = () => {
 						<div className='fixed bottom-0 flex w-full  gap-2 flex-wrap  justify-center items-center'>
 							<CallControls
 								onLeave={async () => {
-									router.push("/");
+									if (isPersonalRoom) {
+										await call?.endCall();
+										router.push("/meeting/ended");
+										endMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+										toast({
+											title: "Personal Meeting is Ended for Everyone",
+										});
+									}
+									router.push("/meeting/leaved");
+									leaveMeeting(
+										call?.id,
+										user?.emailAddresses[0]?.emailAddress ||
+											"default@email.com",
+									);
+
 									toast({
 										title: "You Left the Meeting Room",
 									});
 								}}
 							/>
 
-							{!isPersonalRoom && <EndCallButton />}
+							{!isPersonalRoom && (
+								<EndCallButton
+									onClick={async () => {
+										await call?.endCall();
+										router.push("/meeting/ended");
+										endMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+										toast({
+											title: "Meeting is Ended for Everyone",
+										});
+									}}
+								/>
+							)}
 							<button
 								onClick={() =>
 									setShowParticipants((prev) => !prev)
@@ -354,14 +513,49 @@ const MeetingRoom = () => {
 						<div className='fixed bottom-0 flex w-full  gap-2 flex-wrap  justify-center items-center'>
 							<CallControls
 								onLeave={async () => {
-									router.push("/");
+									if (isPersonalRoom) {
+										await call?.endCall();
+										router.push("/meeting/ended");
+										endMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+										toast({
+											title: "Personal Meeting is Ended for Everyone",
+										});
+									}
+									router.push("/meeting/leaved");
+									leaveMeeting(
+										call?.id,
+										user?.emailAddresses[0]?.emailAddress ||
+											"default@email.com",
+									);
+
 									toast({
 										title: "You Left the Meeting Room",
 									});
 								}}
 							/>
 
-							{!isPersonalRoom && <EndCallButton />}
+							{!isPersonalRoom && (
+								<EndCallButton
+									onClick={async () => {
+										await call?.endCall();
+										router.push("/meeting/ended");
+										endMeeting(
+											call?.id,
+											user?.emailAddresses[0]
+												?.emailAddress ||
+												"default@email.com",
+										);
+										toast({
+											title: "Meeting is Ended for Everyone",
+										});
+									}}
+								/>
+							)}
 							<button
 								onClick={() =>
 									setShowParticipants((prev) => !prev)

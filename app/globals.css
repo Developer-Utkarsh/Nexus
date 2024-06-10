@@ -155,7 +155,7 @@ svg.lucide.lucide-x.h-4.w-4 {
 	--str-video__primary-color: #0e78f9;
 }
 .str-video__video-placeholder {
-	background: #1c1f2e;
+	background: #090925;
 	border-radius: inherit;
 }
 .str-video__video-preview-container {
@@ -171,6 +171,30 @@ svg.lucide.lucide-x.h-4.w-4 {
 		justify-content: center;
 		align-items: center;
 		width: 90%;
-		height: 432px;
+		height: 372px;
+	}
+}
+/* Add this CSS to your stylesheets */
+.button {
+	position: relative;
+}
+
+.button.loading::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 20px;
+	height: 20px;
+	border: 2px solid #ccc;
+	border-top-color: #333;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
 	}
 }

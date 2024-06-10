@@ -8,6 +8,12 @@ const Home = () => {
 	const [currentTime, setCurrentTime] = useState(new Date());
 
 	const { user } = useUser();
+	useEffect(() => {
+		fetch("/api/connectToDB")
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((error) => console.error(error));
+	}, []);
 
 	useEffect(() => {
 		const timer = setInterval(() => {

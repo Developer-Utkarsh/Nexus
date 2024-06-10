@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 
-const EndCallButton = () => {
+const EndCallButton = ({ onClick }: { onClick: () => void }) => {
 	const call = useCall();
 	const { toast } = useToast();
 
@@ -25,13 +25,7 @@ const EndCallButton = () => {
 
 	return (
 		<Button
-			onClick={async () => {
-				await call.endCall();
-				router.push("/");
-				toast({
-					title: "Meeting is Ended for Everyone",
-				});
-			}}
+			onClick={onClick}
 			className='bg-red-500 transition hover:bg-red-600 cursor-pointer lg:mb-3   rounded-full'
 		>
 			End Meeting

@@ -15,20 +15,28 @@ if (!cached) {
 		promise: null,
 	};
 }
+export let isConnected = false;
 
-export const connect = async () => {
-	if (cached.conn) {
-		return cached.conn;
-	}
-
-	cached.promise =
-		cached.promise ||
-		mongoose.connect(MONGODB_URL, {
-			dbName: "blinkchats",
+export async function connect() {
+	if (isConnected) return;
+	try {
+		if (!MONGODB_URL) {
+			throw new Error("MONGODB_URI is not defined");
+		}
+		await mongoose.connect(MONGODB_URL, {
+			dbName: "nexus",
 			bufferCommands: false,
 			connectTimeoutMS: 10000,
 		});
+		isConnected = true;
+		console.log("Database connected successfully");
+	} catch (error) {
+		isConnected = false;
+		console.error("Database connection error:", error);
+		throw error;
+	}
+}
 
-	cached.conn = await cached.promise;
-	return cached.conn;
-};
+export function checkConnection() {
+	return isConnected;
+}

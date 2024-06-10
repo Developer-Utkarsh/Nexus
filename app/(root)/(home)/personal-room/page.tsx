@@ -8,6 +8,15 @@ import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Nexus - Personal Room",
+	description:
+		"This page will show Your Personal Meetings Details to conduct Personal Meetings with Anyone.",
+};
+
 const Table = ({
 	title,
 	description,
