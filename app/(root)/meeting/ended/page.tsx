@@ -12,16 +12,18 @@ export default function Component() {
 			<div className='max-w-md px-10 py-8 rounded-lg bg-dark-1 shadow-lg z-50'>
 				<div className='flex flex-col items-center'>
 					<VideoOffIcon className='h-16 w-16 text-gray-400' />
-					<h2 className='text-2xl font-bold mt-4'>
-						You <span className='text-blue-500'>Left</span> the
-						Meeting
+					<h2 className='text-[20px] font-bold mt-4'>
+						This Meeting is{" "}
+						<span className='text-blue-500'>Ended</span> for
+						Everyone
 					</h2>
 					<div className='text-center w-full leading-normal flex justify-center items-center  flex-col mt-4 '>
-						<p className='text-gray-300 font-semibold text-md'>
-							You have left the video conference.
+						<p className='text-gray-300 font-semibold text-base'>
+							You have Ended the video conference.
 						</p>
 						<p className='text-gray-400 font-medium text-[12px]'>
-							The meeting is still ongoing for other participants.
+							The meeting is ended for everyone no one can join it
+							again.
 						</p>
 					</div>
 					<Link

@@ -12,6 +12,8 @@ export async function POST(req: Request) {
 
 		const { meetingId } = await req.json();
 
+		console.log(meetingId);
+
 		const meeting = await Meeting.findOne({ meetingId });
 
 		if (!meeting) {
@@ -23,7 +25,7 @@ export async function POST(req: Request) {
 
 		const endTime = getCurrentDate();
 
-		// Update meeting status
+		// Update meeting status and end time
 		meeting.status = "ended";
 		meeting.isEnded = true;
 		meeting.endedAt = endTime;

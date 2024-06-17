@@ -84,6 +84,8 @@ export async function POST(req: Request) {
 			isEnded,
 			createdAt: getCurrentDate(),
 			scheduledAt,
+			startsAt: "",
+			endMeetingTimeout: null,
 		});
 
 		await User.updateOne(

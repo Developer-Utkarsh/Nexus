@@ -29,10 +29,11 @@ const MeetingModal = ({
 }: MeetingModalProps) => {
 	const [loading, setLoading] = useState(false);
 
-	const buttonClicked = () => {
+	const buttonClicked = async () => {
 		setLoading(true);
 		if (handleClick) {
-			handleClick();
+			await handleClick();
+			setLoading(false)
 		}
 	};
 
@@ -60,19 +61,28 @@ const MeetingModal = ({
 					</h1>
 					{children}
 					<Button
-						className='bg-blue-1 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-background transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-950 cursor-pointer w-full transition'
-						onClick={handleClick}
+						className={`bg-blue-1 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-background transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-950 cursor-pointer w-full transition ${
+							loading ? "cursor-not-allowed" : ""
+						}`}
+						onClick={buttonClicked}
+						disabled={loading}
 					>
-						{buttonIcon && (
-							<Image
-								src={buttonIcon}
-								alt='button icon'
-								width={12}
-								height={12}
-							/>
+						{loading ? (
+							<div className='dot-pulse'></div>
+						) : (
+							<>
+								{buttonIcon && (
+									<Image
+										src={buttonIcon}
+										alt='button icon'
+										width={12}
+										height={12}
+									/>
+								)}
+								&nbsp;
+								{buttonText || "Schedule Meeting"}
+							</>
 						)}
-						&nbsp;
-						{buttonText || "Schedule Meeting"}
 					</Button>
 				</div>
 			</DialogContent>

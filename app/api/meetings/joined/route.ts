@@ -9,113 +9,117 @@ const getCurrentDate = () => new Date().toLocaleString("en-US", { timeZone });
 connect();
 
 export async function POST(req: Request) {
-	try {
-		const { meetingId, email, username, userImage, startsAt } =
-			await req.json();
+  try {
+    const { meetingId, email, username, userImage, startsAt, fullName } =
+      await req.json();
 
-		// Fetch the meeting details from the database
-		const meeting = await Meeting.findOne({ meetingId });
+    // Fetch the meeting details from the database
+    const meeting = await Meeting.findOne({ meetingId });
 
-		if (!meeting) {
-			return new NextResponse(
-				JSON.stringify({ error: "Meeting not found" }),
-				{
-					status: 404,
-					headers: {
-						"Content-Type": "application/json",
-					},
-				},
-			);
-		}
+    if (!meeting) {
+      return new NextResponse(
+        JSON.stringify({ error: "Meeting not found" }),
+        {
+          status: 404,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
 
-		// Check if the meeting is not started and not ended
-		if (!meeting.isStarted && !meeting.isEnded) {
-			// Update the meeting with the provided startsAt date and set isStarted to true
-			await Meeting.findOneAndUpdate(
-				{ meetingId },
-				{
-					$set: {
-						startsAt: new Date(startsAt),
-						isStarted: true,
-						status: "joined",
-					},
-					$push: {
-						totalUsers: {
-							email,
-							username,
-							image: userImage,
-							joinedAt: getCurrentDate(),
-							leavedAt: "not yet leaved",
-						},
-						activeUsers: {
-							email,
-							username,
-							image: userImage,
-							joinedAt: getCurrentDate(),
-						},
-					},
-				},
-				{ new: true },
-			);
-		}
+    // Check if startsAt is an empty string and replace it with the current date
+    const actualStartsAt = startsAt === "" ? getCurrentDate() : startsAt;
 
-		// Find the user by email
-		const user = await User.findOne({ email });
+    // Check if the meeting is not started and not ended
+    if (!meeting.isStarted && !meeting.isEnded) {
+      // Update the meeting with the provided startsAt date and set isStarted to true
+      await Meeting.findOneAndUpdate(
+        { meetingId },
+        {
+          $set: {
+            startsAt: actualStartsAt,
+            isStarted: true,
+            status: "joined",
+          },
+          $push: {
+            totalUsers: {
+              email,
+              username,
+              image: userImage,
+              joinedAt: getCurrentDate(),
+              leavedAt: "not yet leaved",
+              fullName: fullName,
+            },
+            activeUsers: {
+              email,
+              username,
+              image: userImage,
+              joinedAt: getCurrentDate(),
+              fullName: fullName,
+            },
+          },
+        },
+        { new: true },
+      );
+    }
 
-		if (user) {
-			// Update user's meeting details
-			const updateMeetingDetails = {
-				meetingId,
-				createdBy: meeting.createdBy,
-				title: meeting.title,
-				image: meeting.hostPic,
-				startsAt: new Date(startsAt),
-				joinedAt: getCurrentDate(),
-			};
+    // Find the user by email
+    const user = await User.findOne({ email });
 
-			interface MeetingDetail {
-				meetingId: string;
-				// include other properties of meeting details if there are any
-			}
+    if (user) {
+      // Update user's meeting details
+      const updateMeetingDetails = {
+        meetingId,
+        createdBy: meeting.createdBy,
+        title: meeting.title,
+        image: meeting.hostPic,
+        startsAt: actualStartsAt,
+        joinedAt: getCurrentDate(),
+      };
 
-			// Update totalMeetings and createdMeetings
-			const totalMeetingIndex = user.totalMeetings.findIndex(
-				(m: MeetingDetail) => m.meetingId === meetingId,
-			);
-			if (totalMeetingIndex !== -1) {
-				user.totalMeetings[totalMeetingIndex] = updateMeetingDetails;
-			} else {
-				user.totalMeetings.push(updateMeetingDetails);
-			}
+      interface MeetingDetail {
+        meetingId: string;
+        // include other properties of meeting details if there are any
+      }
 
-			const createdMeetingIndex = user.createdMeetings.findIndex(
-				(m: MeetingDetail) => m.meetingId === meetingId,
-			);
-			if (createdMeetingIndex !== -1) {
-				user.createdMeetings[createdMeetingIndex] =
-					updateMeetingDetails;
-			}
+      // Update totalMeetings and createdMeetings
+      const totalMeetingIndex = user.totalMeetings.findIndex(
+        (m: MeetingDetail) => m.meetingId === meetingId,
+      );
+      if (totalMeetingIndex !== -1) {
+        user.totalMeetings[totalMeetingIndex] = updateMeetingDetails;
+      } else {
+        user.totalMeetings.push(updateMeetingDetails);
+      }
 
-			// Save the updated user document
-			await user.save();
-		}
+      const createdMeetingIndex = user.createdMeetings.findIndex(
+        (m: MeetingDetail) => m.meetingId === meetingId,
+      );
+      if (createdMeetingIndex !== -1) {
+        user.createdMeetings[createdMeetingIndex] = updateMeetingDetails;
+      }
 
-		// Return success message as JSON response
-		return NextResponse.json({
-			msg: "Meeting status updated to joined successfully",
-		});
-	} catch (error) {
-		console.error("Error in joining meeting:", error);
-		return new NextResponse(
-			JSON.stringify({
-				error: "an error occurred while joining the meeting",
-			}),
-			{
-				status: 500,
-				headers: {
-					"Content-Type": "application/json",
-				},
-			},
-		);
-	}
+      // Save the updated user document
+      await user.save();
+    }
+
+    // Return success message as JSON response
+    return NextResponse.json({
+      msg: "Meeting status updated to joined successfully",
+    });
+  } catch (error) {
+    console.error("Error in joining meeting:", error);
+    return new NextResponse(
+      JSON.stringify({
+        error: "an error occurred while joining the meeting",
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
 }

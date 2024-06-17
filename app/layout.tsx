@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -7,7 +7,7 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 
 import NextTopLoader from "nextjs-toploader";
 
-const inter = Noto_Sans({
+const inter = Ubuntu({
 	weight: "400",
 	subsets: ["latin" as "latin"],
 });
@@ -56,7 +56,7 @@ export default function RootLayout({
 					},
 				}}
 			>
-				<body className={`${inter.className} bg-dark-2`}>
+				<body className={`${inter.className} bg-gray-950 `}>
 					<NextTopLoader
 						color='#0E78F9'
 						initialPosition={0.1}
@@ -72,8 +72,10 @@ export default function RootLayout({
 						zIndex={1600}
 						showAtBottom={false}
 					/>
-					<div className='z-0'>
+					<div className='z-0 overflow-hidden'>
 						<BackgroundBeams />
+						<div className='absolute top-6 left-6 w-80 h-80 bg-[#00b894] rounded-full blur-3xl opacity-50 animate-pulse animate-moveRandomlyOne' />
+						<div className='absolute bottom-6 right-6 w-80 h-80 bg-[#e84393] rounded-full blur-3xl opacity-50 animate-pulse animate-moveRandomlySecond' />
 					</div>
 					<div className='z-50'>
 						{children}

@@ -18,7 +18,7 @@ export default function Component() {
 						Meeting
 					</h2>
 					<div className='text-center w-full leading-normal flex justify-center items-center  flex-col mt-4 '>
-						<p className='text-gray-300 font-semibold text-md'>
+						<p className='text-gray-300 font-semibold text-base'>
 							You have left the video conference.
 						</p>
 						<p className='text-gray-400 font-medium text-[12px]'>

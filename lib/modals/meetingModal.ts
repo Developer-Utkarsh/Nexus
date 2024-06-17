@@ -5,10 +5,12 @@ const MeetingUserSchema = new Schema({
 	username: String,
 	image: String,
 	joinedAt: String,
+	fullName: String,
 });
 const MeetingsTotalUserSchema = new Schema({
 	email: String,
 	username: String,
+	fullName: String,
 	image: String,
 	joinedAt: String,
 	leavedAt: String,
