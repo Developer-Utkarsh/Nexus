@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { Meeting } from "../../../lib/modals/meetingModal";
 import { User } from "../../../lib/modals/userModal";
-import { checkDbConnection } from "@/middleware";
+import { connect } from "@/lib/db";
 
 const timeZone = "Asia/Kolkata";
 const getCurrentDate = () => new Date().toLocaleString("en-US", { timeZone });
 
 export async function POST(req: Request) {
 	try {
-		await checkDbConnection();
+		await connect();
 
 		const {
 			title,
