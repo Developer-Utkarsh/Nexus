@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -8,7 +9,7 @@ export default function NotFound() {
 				<div className='absolute -bottom-32 -right-32 w-80 h-80 bg-[#e84393] rounded-full blur-3xl opacity-50 animate-pulse' />
 				<div className='relative z-10 flex flex-col items-center justify-center space-y-8'>
 					<div className='w-full flex justify-center items-center'>
-						<img
+						<Image
 							src='/images/404.png'
 							width={300}
 							height={150}
@@ -21,8 +22,8 @@ export default function NotFound() {
 							Nexus - Page Not Found
 						</h1>
 						<p className='text-lg text-gray-400'>
-							Oops, it looks like the page you're looking for
-							doesn't exist. Please check the URL or try
+							Oops, it looks like the page you&apos;re looking for
+							doesn&apos;t exist. Please check the URL or try
 							navigating back to the main app.
 						</p>
 						<Link
