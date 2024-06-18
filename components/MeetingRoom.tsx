@@ -144,7 +144,7 @@ const MeetingRoom = () => {
 				</div>
 				<div
 					className={cn(
-						"h-[calc(100vh-86px)] hidden ml-2 max-md:absolute max-md:w-full z-50 max-md:flex justify-center items-center",
+						"h-[calc(100vh-86px)] hidden ml-2 max-md:absolute max-md:w-full z-50  justify-center items-center",
 						{
 							"show-block": showParticipants,
 						},
@@ -265,7 +265,7 @@ const MeetingRoom = () => {
 					</DropdownMenu>
 				</div>
 			</div>
-			<div className='md:hidden flex w-full gap-3 flex-wrap'>
+			<div className='md:hidden flex w-full gap-2 flex-wrap bottom-2'>
 				<div className='absolute bottom-2 flex m-auto w-full gap-x-2  justify-center items-center'>
 					<CallControls
 						onLeave={async () => {
@@ -307,7 +307,7 @@ const MeetingRoom = () => {
 								<i className='fa-solid fa-ellipsis-vertical'></i>
 							</button>
 						</PopoverTrigger>
-						<PopoverContent className='bg-dark-1 p-2 rouned-md left-2 mr-2'>
+						<PopoverContent className='bg-dark-1 p-2 rouned-md max-w-[200px] left-2 mr-2'>
 							<div className=' flex gap-3 justify-center w-full items-center'>
 								<div className='border border-slate-500 rounded-md shadow-lg text-white'>
 									<button
@@ -327,10 +327,13 @@ const MeetingRoom = () => {
 								<div className='border border-slate-400 rounded-md shadow-lg'>
 									<DropdownMenu>
 										<div className='flex items-center'>
-											<DropdownMenuTrigger className='cursor-pointer rounded-md bg-[#19232d] p-2 hover:bg-gray-700 text-white'>
+											<DropdownMenuTrigger className='cursor-pointer rounded-md bg-[#19232d] p-2 hover:bg-gray-700 text-white flex'>
 												<LayoutList
 													size={20}
 													className='text-blue-1'
+													gap-3
+													items-center
+													justify-center
 												/>
 												<p>Layout</p>
 											</DropdownMenuTrigger>
