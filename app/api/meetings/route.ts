@@ -84,7 +84,7 @@ export async function POST(req: Request) {
 			isEnded,
 			createdAt: getCurrentDate(),
 			scheduledAt,
-			startsAt: "",
+			startsAt: startsAt || getCurrentDate(), // Ensure startsAt is set correctly
 			endMeetingTimeout: null,
 		});
 
@@ -100,7 +100,7 @@ export async function POST(req: Request) {
 						createdBy,
 						status,
 						joinedAt,
-						startsAt,
+						startsAt: startsAt || getCurrentDate(), // Ensure startsAt is set correctly
 						endedAt,
 						isEnded,
 						isStarted,
@@ -115,7 +115,7 @@ export async function POST(req: Request) {
 						createdBy,
 						status,
 						joinedAt,
-						startsAt,
+						startsAt: startsAt || getCurrentDate(), // Ensure startsAt is set correctly
 						endedAt,
 						isEnded,
 						isStarted,

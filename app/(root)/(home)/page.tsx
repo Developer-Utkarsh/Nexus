@@ -3,11 +3,12 @@
 import MeetingTypeList from "@/components/MeetingTypeList";
 import React, { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 
 const Home = () => {
 	const [currentTime, setCurrentTime] = useState(new Date());
-
 	const { user } = useUser();
+
 	useEffect(() => {
 		fetch("/api/connectToDB")
 			.then((response) => response.json())
@@ -37,6 +38,13 @@ const Home = () => {
 		day: "2-digit",
 		year: "numeric",
 	});
+
+	useEffect(() => {
+		const cancelMeeting = setInterval(() => {
+			axios.post("/api/cancelled/");
+		}, 150000);
+		return () => clearInterval(cancelMeeting);
+	}, []);
 
 	return (
 		<section className='flex size-full flex-col gap-10 text-white'>

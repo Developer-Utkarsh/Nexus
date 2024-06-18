@@ -28,6 +28,18 @@ import CurrentTime from "./CurrentTime";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import TopLoadingBar from "./TopLoadingBar";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -71,6 +83,8 @@ const MeetingRoom = () => {
 	};
 
 	const leaveMeeting = async (meetingId: any, email: string) => {
+		if (isPersonalRoom) return;
+
 		setLoading(true);
 		setProgress(30);
 		await axios.post("/api/meetings/leave/", { meetingId, email });
@@ -80,6 +94,8 @@ const MeetingRoom = () => {
 	};
 
 	const endMeeting = async (meetingId: any) => {
+		if (isPersonalRoom) return;
+
 		setLoading(true);
 		setProgress(30);
 		await axios.post("/api/meetings/ended/", { meetingId });
@@ -127,9 +143,12 @@ const MeetingRoom = () => {
 					<CallLayout />
 				</div>
 				<div
-					className={cn("h-[calc(100vh-86px)] hidden ml-2", {
-						"show-block": showParticipants,
-					})}
+					className={cn(
+						"h-[calc(100vh-86px)] hidden ml-2 max-md:absolute max-md:w-full z-50 max-md:h-[90vh] max-md:flex justify-center items-center",
+						{
+							"show-block": showParticipants,
+						},
+					)}
 				>
 					<CallParticipantsList
 						onClose={() => setShowParticipants(false)}
@@ -180,19 +199,47 @@ const MeetingRoom = () => {
 						/>
 					)}
 				</div>
+
 				<div className='fixed bottom-5 right-5 flex gap-3 justify-end mr-4 items-center'>
-					<button
-						onClick={() => setShowParticipants((prev) => !prev)}
-					>
-						<div className='flex items-center justify-center rounded-full bg-[#19232d] p-2 hover:bg-[#4c535b] cursor-pointer'>
-							<Users size={20} className='text-white' />
-						</div>
-					</button>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger>
+								<button
+									onClick={() =>
+										setShowParticipants((prev) => !prev)
+									}
+								>
+									<div className='flex items-center justify-center rounded-full bg-[#19232d] p-2 hover:bg-[#4c535b] cursor-pointer'>
+										<Users
+											size={20}
+											className='text-white'
+										/>
+									</div>
+								</button>
+							</TooltipTrigger>
+							<TooltipContent className='bg-dark-1 border border-slate-700'>
+								<p>Joined Users</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+
 					<DropdownMenu>
 						<div className='flex items-center'>
-							<DropdownMenuTrigger className='cursor-pointer rounded-full bg-[#19232d] p-2 hover:bg-[#4c535b]'>
-								<LayoutList size={20} className='text-white' />
-							</DropdownMenuTrigger>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<DropdownMenuTrigger className='cursor-pointer rounded-full bg-[#19232d] p-2 hover:bg-[#4c535b]'>
+											<LayoutList
+												size={20}
+												className='text-white'
+											/>
+										</DropdownMenuTrigger>
+									</TooltipTrigger>
+									<TooltipContent className='bg-dark-1 border border-slate-700'>
+										<p>Meeting Layout</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</div>
 
 						<DropdownMenuContent className='border-dark-1 bg-dark-1 text-white'>
@@ -208,7 +255,7 @@ const MeetingRoom = () => {
 												);
 											}}
 										>
-											{item}``
+											{item}
 										</DropdownMenuItem>
 										<DropdownMenuSeparator className='border-dark-1' />
 									</div>
@@ -216,6 +263,105 @@ const MeetingRoom = () => {
 							)}
 						</DropdownMenuContent>
 					</DropdownMenu>
+				</div>
+			</div>
+			<div className='md:hidden flex w-full gap-3'>
+				<div className='absolute bottom-2 flex m-auto w-full gap-x-2  justify-center items-center'>
+					<CallControls
+						onLeave={async () => {
+							if (isPersonalRoom) {
+								await call?.endCall();
+								router.push("/meeting/ended");
+								toast({
+									title: "Personal Meeting is Ended for Everyone",
+								});
+							} else {
+								router.push("/meeting/leaved");
+								leaveMeeting(
+									call?.id,
+									user?.emailAddresses[0]?.emailAddress ||
+										"default@email.com",
+								);
+								toast({
+									title: "You Left the Meeting Room",
+								});
+							}
+						}}
+					/>
+
+					{!isPersonalRoom && (
+						<EndCallButton
+							onClick={async () => {
+								await call?.endCall();
+								router.push("/meeting/ended");
+								endMeeting(call?.id);
+								toast({
+									title: "Meeting is Ended for Everyone",
+								});
+							}}
+						/>
+					)}
+					<Popover>
+						<PopoverTrigger>
+							<button className='p-2 border border-slate-700 text-lg text-slate-200 rounded-full bg-gray-700 hover:bg-blue-1 hover:text-slate-50 transition '>
+								<i className='fa-solid fa-ellipsis-vertical'></i>
+							</button>
+						</PopoverTrigger>
+						<PopoverContent className='bg-dark-1 max-w-[100px] p-2 rouned-md'>
+							<div className=' flex gap-3 justify-center w-full items-center'>
+								<div className='border border-slate-400 rounded-md shadow-lg'>
+									<button
+										onClick={() =>
+											setShowParticipants((prev) => !prev)
+										}
+									>
+										<div className='flex items-center justify-center rounded-md bg-[#19232d] p-2 hover:bg-[#4c535b] cursor-pointer gap-2'>
+											<Users
+												size={20}
+												className='text-white '
+											/>
+											<p>Users</p>
+										</div>
+									</button>
+								</div>
+								<div className='border border-slate-400 rounded-md shadow-lg'>
+									<DropdownMenu>
+										<div className='flex items-center'>
+											<DropdownMenuTrigger className='cursor-pointer rounded-full bg-[#19232d] p-2 hover:bg-[#4c535b]'>
+												<LayoutList
+													size={20}
+													className='text-white'
+												/>
+											</DropdownMenuTrigger>
+										</div>
+
+										<DropdownMenuContent className='border-dark-1 bg-dark-1 text-white'>
+											{[
+												"Grid",
+												"Speaker-Left",
+												"Speaker-Right",
+											].map((item, index) => (
+												<div key={index}>
+													<DropdownMenuItem
+														key={item}
+														className='cursor-pointer'
+														onClick={() => {
+															setLayout(
+																item.toLowerCase() as CallLayoutType,
+															);
+														}}
+													>
+														{item}
+													</DropdownMenuItem>
+													<DropdownMenuSeparator className='border-dark-1' />
+												</div>
+											))}
+										</DropdownMenuContent>
+									</DropdownMenu>
+								</div>
+							</div>
+						</PopoverContent>
+					</Popover>
 				</div>
 			</div>
 		</section>

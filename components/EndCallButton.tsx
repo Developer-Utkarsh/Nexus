@@ -5,6 +5,12 @@ import React from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const EndCallButton = ({ onClick }: { onClick: () => void }) => {
 	const call = useCall();
@@ -24,12 +30,21 @@ const EndCallButton = ({ onClick }: { onClick: () => void }) => {
 	if (!isMeetingOwner) return null;
 
 	return (
-		<Button
-			onClick={onClick}
-			className='bg-red-500 transition hover:bg-red-600 cursor-pointer lg:mb-3   rounded-full'
-		>
-			End Meeting
-		</Button>
+		<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger>
+					<Button
+						onClick={onClick}
+						className='bg-red-500 transition hover:bg-red-600 cursor-pointer lg:mb-3  p-2 text-xl  rounded-full'
+					>
+						<i className='fa-solid fa-power-off'></i>
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent className='bg-dark-1 border border-slate-700'>
+					<p>End Meeting For Everyone</p>
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
 	);
 };
 

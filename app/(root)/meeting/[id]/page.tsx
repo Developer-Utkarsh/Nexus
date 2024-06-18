@@ -32,10 +32,16 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 		null,
 	);
 	const [isLoading, setIsLoading] = useState(true);
-
 	const { call, isCallLoading } = useGetCallByID(id);
+	const [isPersonal, setIsPersonal] = useState(false);
+
+	useEffect(() => {
+		setIsPersonal(window.location.href.includes("personal"));
+	}, []);
 
 	const getMeetingDetails = async () => {
+		if (isPersonal) return;
+
 		try {
 			const response = await fetch("/api/details", {
 				method: "POST",
@@ -51,7 +57,6 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 
 			const data: MeetingDetails = await response.json();
 			setMeetingDetails(data);
-
 			if (data.createdBy) {
 				document.title = `Nexus - Meeting by ${data.createdBy}`;
 			}
@@ -64,6 +69,7 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 	};
 
 	const cancelOverdueMeetings = async () => {
+		if (isPersonal) return;
 		try {
 			await fetch("/api/cancelled", {
 				method: "POST",
@@ -83,7 +89,6 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 
 	useEffect(() => {
 		const interval = setInterval(cancelOverdueMeetings, 60000); // Check every minute
-
 		return () => clearInterval(interval);
 	}, []);
 
@@ -137,11 +142,11 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 		return <Loader />;
 	}
 
-	if (!meetingDetails) {
+	if (!meetingDetails && !isPersonal) {
 		return <NotFound />; // Show NotFound component if meetingDetails is null
 	}
 
-	if (meetingDetails.isCancelled) {
+	if (meetingDetails?.isCancelled) {
 		return (
 			<MeetingCancelled
 				createdBy={meetingDetails.createdBy}
@@ -151,7 +156,7 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 		);
 	}
 
-	if (meetingDetails.isEnded) {
+	if (meetingDetails?.isEnded) {
 		return (
 			<MeetingEnded
 				endedBy={meetingDetails.createdBy}
@@ -161,7 +166,7 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 		);
 	}
 
-	if (!meetingDetails.isStarted && meetingDetails.isScheduled) {
+	if (!meetingDetails?.isStarted && meetingDetails?.isScheduled) {
 		if (
 			user?.emailAddresses[0]?.emailAddress !== meetingDetails.hostEmail
 		) {
@@ -184,7 +189,7 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 						<MeetingSetup
 							setIsSetupComplete={setIsSetupComplete}
 							createdBy={meetingDetails?.createdBy ?? ""}
-							title={meetingDetails.title}
+							title={meetingDetails?.title ?? ""}
 						/>
 					) : (
 						<MeetingRoom />

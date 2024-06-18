@@ -20,6 +20,14 @@ const MeetingSetup = ({
 	createdBy: string;
 	title: string;
 }) => {
+	const [isMicEnabled, setIsMicEnabled] = useState(true);
+	const [isCamEnabled, setIsCamEnabled] = useState(true);
+	const call = useCall();
+	const { user } = useUser();
+	const [loading, setLoading] = useState(false);
+	const [progress, setProgress] = useState(0);
+	const [isPersonal, setIsPersonal] = useState(false);
+
 	useEffect(() => {
 		fetch("/api/connectToDB")
 			.then((response) => response.json())
@@ -27,12 +35,9 @@ const MeetingSetup = ({
 			.catch((error) => console.error(error));
 	}, []);
 
-	const [isMicEnabled, setIsMicEnabled] = useState(true);
-	const [isCamEnabled, setIsCamEnabled] = useState(true);
-	const call = useCall();
-	const { user } = useUser();
-	const [loading, setLoading] = useState(false);
-	const [progress, setProgress] = useState(0);
+	useEffect(() => {
+		setIsPersonal(window.location.href.includes("personal"));
+	}, []);
 
 	if (!call) {
 		throw new Error("useCall must be used within StreamCall Component");
@@ -72,7 +77,13 @@ const MeetingSetup = ({
 		username: string,
 		email: string,
 		joinedAt: Date,
+		isPersonal: boolean,
 	) => {
+		if (isPersonal) {
+			setIsSetupComplete(true);
+			return;
+		}
+
 		let fullName;
 
 		if (user) {
@@ -96,25 +107,22 @@ const MeetingSetup = ({
 		setLoading(false);
 	};
 
-	const meetingTitle = window.location.href.includes("personal")
-		? "Personal Meeting"
-		: title;
-	const personal = window.location.href.includes("personal") ? true : false;
+	const meetingTitle = isPersonal ? "Personal Meeting" : title;
 
 	return (
-		<div className='flex h-screen flex-col w-full items-center justify-center gap-3 text-white'>
+		<div className='flex h-screen flex-col w-full items-center justify-center gap-3 text-white z-50'>
 			<TopLoadingBar progress={progress} />
-			<h1 className='text-4xl font-bold tracking-wide uppercase'>
+			<h1 className='text-3xl max-sm:text-2xl max-sm:mt-4 m-0 font-bold tracking-wide uppercase'>
 				{meetingTitle}
 			</h1>
-			<p className='text-sm font-medium tracking-wide  text-neutral-400'>
+			<p className='text-sm font-medium tracking-wide  mt-0 text-neutral-400'>
 				Created by{" "}
 				<span className='text-blue-1 hover:text-blue-600 '>
 					@{createdBy}
 				</span>
 			</p>
 			<VideoPreview />
-			<div className='flex h-16 items-center justify-center gap-4 mt-2 z-50'>
+			<div className='flex items-center justify-center gap-4 mt-2 z-50'>
 				<button
 					className={`p-2 rounded-full text-xl transition-colors duration-300 ${
 						isMicEnabled ? "bg-blue-500" : "bg-red-500"
@@ -160,6 +168,7 @@ const MeetingSetup = ({
 						user?.emailAddresses[0]?.emailAddress ||
 							"default@email.com",
 						new Date(),
+						isPersonal,
 					);
 					setIsSetupComplete(true);
 				}}

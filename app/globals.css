@@ -1,14 +1,22 @@
 @import url("@stream-io/video-react-sdk/dist/css/styles.css")
 layer(video-default);
+/* @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap'); */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+
+
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+
+
+
 }
 
 /* ======== stream css overrides ======== */
@@ -164,12 +172,14 @@ svg.lucide.lucide-x.h-4.w-4 {
 	border-radius: inherit;
 	border: 1px solid #aaa;
 }
+
+
 .str-video__video-preview-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 50%;
-	height: 350px;
+	width: 75%;
+	height: 372px;
 }
 @media (max-width: 992px) {
 	.str-video__video-preview-container {
@@ -177,7 +187,7 @@ svg.lucide.lucide-x.h-4.w-4 {
 		justify-content: center;
 		align-items: center;
 		width: 90%;
-		height: 372px;
+		height: 324px;
 	}
 }
 /* Add this CSS to your stylesheets */
@@ -304,14 +314,14 @@ svg.lucide.lucide-x.h-4.w-4 {
 
 .str-video {
 	
-	--str-video__button-default-base: rgba(15, 25, 50, 0.75	);
-	--str-video__button-default-hover: rgba(15, 25, 50, 0.9);
-	--str-video__button-default-pressed: rgba(15, 25, 50, 1);
-	--str-video__button-default-active: rgba(15, 25, 50, 1);
-	--str-video__button-default-disabled: rgba(15, 25, 50, 0.3);
-	--str-video__button-primary-base: rgba(15, 15, 25, 0.75);
+	--str-video__button-default-base: rgba(30, 50, 100, 0.75	);
+	--str-video__button-default-hover: rgba(30, 50, 100, 0.9);
+	--str-video__button-default-pressed: rgba(30, 50, 100, 1);
+	--str-video__button-default-active: rgba(30, 50, 100, 1);
+	--str-video__button-default-disabled: rgba(30, 50, 100, 0.3);
+	--str-video__button-primary-base: rgba(30, 50, 100, 0.75);
 
-	--str-video__button-secondary-base: rgba(15, 25, 50, 0.6);
+	--str-video__button-secondary-base: rgba(30, 50, 100, 0.6);
 
 --str-video__base-color7: #000;
 }
@@ -320,5 +330,50 @@ svg.lucide.lucide-x.h-4.w-4 {
 .str-video__device-settings {
 	padding: 0.5rem;
 	z-index: 1;
-	font-family: "Ubuntu";
+	font-family: "Ubuntu", sans-serif;
+}
+
+
+
+
+::-webkit-scrollbar{
+	width: 8px;
+	border-radius: 20px;
+}
+::-webkit-scrollbar-track{
+	background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+	background-color: #0e78f9;
+	border-radius: 20px;
+	width: 8px;
+}
+
+
+
+
+
+.str-video__video-preview-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 75%;
+	height: 358px;
+}
+@media (max-width: 992px) {
+	.str-video__video-preview-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 90%;
+		height: 324px;
+	}
+}
+.str-video__participant-list {
+	background-color: #1c1f2e;
+	padding: 10px;
+	border-radius: 10px;
+	color: white;
+	height: 90%;
+	width: 75%;
 }
