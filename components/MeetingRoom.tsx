@@ -144,7 +144,7 @@ const MeetingRoom = () => {
 				</div>
 				<div
 					className={cn(
-						"h-[calc(100vh-86px)] hidden ml-2 max-md:absolute max-md:w-full z-50 max-md:h-[90vh] max-md:flex justify-center items-center",
+						"h-[calc(100vh-86px)] hidden ml-2 max-md:absolute max-md:w-full z-50 max-md:flex justify-center items-center",
 						{
 							"show-block": showParticipants,
 						},
@@ -265,7 +265,7 @@ const MeetingRoom = () => {
 					</DropdownMenu>
 				</div>
 			</div>
-			<div className='md:hidden flex w-full gap-3'>
+			<div className='md:hidden flex w-full gap-3 flex-wrap'>
 				<div className='absolute bottom-2 flex m-auto w-full gap-x-2  justify-center items-center'>
 					<CallControls
 						onLeave={async () => {
@@ -303,22 +303,22 @@ const MeetingRoom = () => {
 					)}
 					<Popover>
 						<PopoverTrigger>
-							<button className='p-2 border border-slate-700 text-lg text-slate-200 rounded-full bg-gray-700 hover:bg-blue-1 hover:text-slate-50 transition '>
+							<button className='p-2 px-4 border border-slate-700 text-lg text-slate-200 rounded-full bg-gray-700 hover:bg-blue-1 hover:text-slate-50 transition '>
 								<i className='fa-solid fa-ellipsis-vertical'></i>
 							</button>
 						</PopoverTrigger>
-						<PopoverContent className='bg-dark-1 max-w-[100px] p-2 rouned-md'>
+						<PopoverContent className='bg-dark-1 p-2 rouned-md left-2 mr-2'>
 							<div className=' flex gap-3 justify-center w-full items-center'>
-								<div className='border border-slate-400 rounded-md shadow-lg'>
+								<div className='border border-slate-500 rounded-md shadow-lg text-white'>
 									<button
 										onClick={() =>
 											setShowParticipants((prev) => !prev)
 										}
 									>
-										<div className='flex items-center justify-center rounded-md bg-[#19232d] p-2 hover:bg-[#4c535b] cursor-pointer gap-2'>
+										<div className='flex items-center justify-center rounded-md bg-[#19232d] p-2 hover:bg-gray-700 cursor-pointer gap-2'>
 											<Users
 												size={20}
-												className='text-white '
+												className='text-blue-1  '
 											/>
 											<p>Users</p>
 										</div>
@@ -327,11 +327,12 @@ const MeetingRoom = () => {
 								<div className='border border-slate-400 rounded-md shadow-lg'>
 									<DropdownMenu>
 										<div className='flex items-center'>
-											<DropdownMenuTrigger className='cursor-pointer rounded-full bg-[#19232d] p-2 hover:bg-[#4c535b]'>
+											<DropdownMenuTrigger className='cursor-pointer rounded-md bg-[#19232d] p-2 hover:bg-gray-700 text-white'>
 												<LayoutList
 													size={20}
-													className='text-white'
+													className='text-blue-1'
 												/>
+												<p>Layout</p>
 											</DropdownMenuTrigger>
 										</div>
 
@@ -353,7 +354,7 @@ const MeetingRoom = () => {
 													>
 														{item}
 													</DropdownMenuItem>
-													<DropdownMenuSeparator className='border-dark-1' />
+													<DropdownMenuSeparator className='border-slate-700' />
 												</div>
 											))}
 										</DropdownMenuContent>
