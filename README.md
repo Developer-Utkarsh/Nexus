@@ -71,9 +71,9 @@ Visit the Nexus Homepage to use Nexus Video Calling Features.
 
 **Link**
 
-You can use `Nexus` on https://nexus.onrender.com/
+You can use `Nexus` on https://nexus-live.vercel.app/
 
-[Use Nexus](https://nexus.onrender.com/)
+[Use Nexus](https://nexus-live.vercel.app/)
 
 
     Happy Conferencing, and may you get your meeting as you planned!
